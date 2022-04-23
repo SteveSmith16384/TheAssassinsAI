@@ -8,7 +8,6 @@ func _ready():
 
 	var bmap = {} # Vector2, bool=floor
 	var nodes = {} # Vector2, id 
-#	var id:int = 0
 
 	# Add walls
 	for y in CITY_SIZE:
@@ -16,7 +15,7 @@ func _ready():
 			var xpos = x * Globals.SQ_SIZE
 			var ypos = y * Globals.SQ_SIZE
 			var vec = Vector2(xpos, ypos)
-			if Globals.rnd.randi_range(0, 4) == 0 or x == 0 or y == 0 or x == CITY_SIZE-1 or y == CITY_SIZE-1:
+			if Globals.rnd.randi_range(0, 6) == 0 or x == 0 or y == 0 or x == CITY_SIZE-1 or y == CITY_SIZE-1:
 				bmap[vec] = false
 				# Create wall
 				var wall = csn_class.instance()

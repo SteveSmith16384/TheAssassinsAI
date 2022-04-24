@@ -4,6 +4,7 @@ func _ready():
 	var astar : AStar2D = AStar2D.new()
 
 	var csn_class = preload("res://Wall.tscn")
+	var lookfor_class = preload("res://LookForNode.tscn")
 	var CITY_SIZE = 48 # todo - get from file
 
 	var bmap = {} # Vector2, bool=floor
@@ -29,8 +30,7 @@ func _ready():
 				bmap[vec] = false
 				# Wall
 				var wall = csn_class.instance()
-				wall.position.x = xpos
-				wall.position.y = ypos
+				wall.position = vec
 				self.add_child(wall)
 			else:
 				# Floor
@@ -38,6 +38,9 @@ func _ready():
 				bmap[vec] = true
 				astar.add_point(id, vec)
 				nodes[vec] = id
+				var lfn = lookfor_class.instance()
+				lfn.position = vec
+				self.add_child(lfn)
 	file.close()
 				
 	# Connect nodes

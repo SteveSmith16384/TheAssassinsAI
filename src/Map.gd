@@ -40,7 +40,7 @@ func _ready():
 				nodes[vec] = id
 				var lfn = lookfor_class.instance()
 				lfn.position = vec
-				self.add_child(lfn)
+				$LookForNodes.add_child(lfn)
 	file.close()
 				
 	# Connect nodes
@@ -65,11 +65,18 @@ func _ready():
 				var vec_d = Vector2(xpos, ypos+Globals.SQ_SIZE)
 				if bmap[vec_d]:
 					astar.connect_points(nodes[vec], nodes[vec_d])
-					
-
+		pass
+		
 	Globals.astar = astar
 	pass
 
+
+func get_final_dest():
+	var m = $LookForNodes.get_child_count()
+	var idx = Globals.rnd.randi_range(0, m)
+	return $LookForNodes.get_child(idx).global_position
+	
+	
 func _ready_ORIGINAL():
 	var astar : AStar2D = AStar2D.new()
 

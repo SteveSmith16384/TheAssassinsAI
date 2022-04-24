@@ -6,6 +6,8 @@ const RELEASE_MODE = false
 # Debug settings
 #const SHOW_FPS = true and !RELEASE_MODE
 
+enum AI_Objective {FindSterner, DefendSterner}
+
 const MAP_SIZE:int = 40
 const SQ_SIZE:int = 10
 

@@ -6,12 +6,15 @@ const SPEED = 1
 onready var main = get_tree().get_root().get_node("Main")
 
 export var side:int
-var main_target # If seen, go ape!
+var objective
+var main_target # Probably Sterner
 var group = [] # Other friendly units
 
 var route = []
 var current_enemy
 var alive = true
+
+var final_dest #  When looking for Sterner
 
 func _ready():
 	pass
@@ -30,18 +33,23 @@ func _process(delta):
 		return
 		
 	if route.empty():
-		var dest = Vector2(200, 200)
-		route = Globals.get_route(self.position, dest)
+		if objective == Globals.AI_Objective.FindSterner:
+			final_dest = get_final_dest()
+			route = Globals.get_route(self.position, final_dest)
 	else:
-		var dest:Vector2 = route[0]
-		if dest.distance_to(self.position) < 3:
+		var target:Vector2 = route[0]
+		if target.distance_to(self.position) < 3:
 			route.remove(0)
 		else:
-			var diff = (dest - self.position).normalized() * SPEED
+			var diff = (target - self.position).normalized() * SPEED
 			self.position += diff
 	pass
 
 
+func get_final_dest():
+	return main.get_final_dest()
+	
+	
 func _on_Timer_CheckForEnemies_timeout():
 	# CHeck if any enemies can be seen
 	for unit in main.units:

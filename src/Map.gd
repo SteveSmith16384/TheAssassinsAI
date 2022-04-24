@@ -15,7 +15,7 @@ func _ready():
 	if res != 0:
 		push_error("Error opening map file")
 	
-	file.get_csv_line() # Skip header
+	var _unused = file.get_csv_line() # Skip header
 	var y: int = -1
 	while !file.eof_reached():
 		y += 1
@@ -73,7 +73,10 @@ func _ready():
 
 func get_final_dest():
 	var m = $LookForNodes.get_child_count()
-	var idx = Globals.rnd.randi_range(0, m)
+	if m == 0:
+		# Todo - restart looking!
+		pass
+	var idx = Globals.rnd.randi_range(0, m-1)
 	return $LookForNodes.get_child(idx).global_position
 	
 	

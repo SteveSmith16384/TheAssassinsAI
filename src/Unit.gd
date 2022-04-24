@@ -2,6 +2,7 @@ class_name Unit
 extends Node2D
 
 const SPEED = 1
+const bullet_cls = preload("res://Bullet.tscn")
 
 onready var main = get_tree().get_root().get_node("Main")
 
@@ -13,7 +14,7 @@ var group = [] # Other friendly units
 var route = []
 var current_enemy
 var alive = true
-
+var shot_timer:float = 0
 var final_dest #  When looking for Sterner
 
 func _ready():
@@ -25,11 +26,14 @@ func _process(delta):
 	if alive == false:
 		return
 		
+	shot_timer -= delta
 	if current_enemy != null:
 		if current_enemy.alive == false or main.is_in_line_of_sight(self, current_enemy) == false:
 			current_enemy = null
 		else:
-			shoot()
+			if shot_timer <= 0:
+				shoot(current_enemy)
+				shot_timer = 1
 		return
 		
 	if route.empty():
@@ -41,7 +45,7 @@ func _process(delta):
 		if target.distance_to(self.position) < 3:
 			route.remove(0)
 		else:
-			var diff = (target - self.position).normalized() * SPEED
+			var diff = (target - self.global_position).normalized() * SPEED
 			self.position += diff
 	pass
 
@@ -55,7 +59,9 @@ func _on_Timer_CheckForEnemies_timeout():
 	for unit in main.units:
 		if unit.side == self.side:
 			continue
-		if self.position.distance_to(unit.position) > 100:
+		if unit.alive == false:
+			continue
+		if self.global_position.distance_to(unit.global_position) > 100:
 			continue
 		if main.is_in_line_of_sight(self, unit) == false:
 			continue
@@ -66,8 +72,13 @@ func _on_Timer_CheckForEnemies_timeout():
 	pass
 
 
-func shoot():
-	#todo
+func shoot(target):
+	var bullet = bullet_cls.instance()
+	bullet.shooter = self
+	bullet.position = self.global_position
+	var diff = (target.global_position - self.global_position).normalized()
+	bullet.dir = diff
+	main.add_child(bullet)
 	pass
 	
 
@@ -88,3 +99,8 @@ func _on_Area2D_Closeby_area_exited(area):
 	if unit.side == side:
 		group.erase(unit)
 	pass
+
+
+func died():
+	alive = false
+	

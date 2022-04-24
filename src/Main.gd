@@ -17,17 +17,7 @@ func create_units():
 
 	var unit10 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(200, 200))
 	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 220))
-#	var unit = unit_class.instance()
-#	unit.position = Vector2(10, 10)
-#	unit.side = 1
-#	self.add_child(unit)
-#	units.push_back(unit)
-
-#	unit = unit_class.instance()
-#	unit.position = Vector2(360, 360)
-#	unit.side = 2
-#	self.add_child(unit)
-#	units.push_back(unit)
+	var unit12 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 10))
 
 	pass
 

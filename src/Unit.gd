@@ -1,7 +1,7 @@
 class_name Unit
 extends Node2D
 
-const SPEED = 1
+const SPEED = 20
 const bullet_cls = preload("res://Bullet.tscn")
 
 onready var main = get_tree().get_root().get_node("Main")
@@ -45,7 +45,7 @@ func _process(delta):
 		if target.distance_to(self.position) < 3:
 			route.remove(0)
 		else:
-			var diff = (target - self.global_position).normalized() * SPEED
+			var diff = (target - self.global_position).normalized() * SPEED * delta
 			self.position += diff
 	pass
 

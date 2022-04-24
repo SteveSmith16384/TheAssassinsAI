@@ -1,12 +1,12 @@
 extends Node2D
 
-const SPEED = 5
+const SPEED = 100
 
 var shooter
 var dir: Vector2
 
 func _process(delta):
-	self.position += dir * SPEED
+	self.position += dir * SPEED * delta
 	pass
 
 

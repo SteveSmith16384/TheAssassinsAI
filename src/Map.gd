@@ -1,6 +1,9 @@
 extends Node2D
 
-func _ready():
+var deploy1 = []
+var deploy2 = []
+
+func load_map():
 	var astar : AStar2D = AStar2D.new()
 
 	var csn_class = preload("res://Wall.tscn")
@@ -9,9 +12,9 @@ func _ready():
 
 	var bmap = {} # Vector2, bool=floor
 	var nodes = {} # Vector2, id 
-
+	
 	var file : File = File.new()
-	var res = file.open("res://Data/theassassins.csv", file.READ)
+	var res = file.open("res://Data/theassassins.txt", file.READ)
 	if res != 0:
 		push_error("Error opening map file")
 	
@@ -41,6 +44,10 @@ func _ready():
 				var lfn = lookfor_class.instance()
 				lfn.position = vec
 				$LookForNodes.add_child(lfn)
+				if csv[x].find("DEPLOY:1") >= 0:
+					deploy1.push_back(vec)
+				elif csv[x].find("DEPLOY:2") >= 0:
+					deploy2.push_back(vec)
 	file.close()
 				
 	# Connect nodes
@@ -80,58 +87,16 @@ func get_final_dest():
 	return $LookForNodes.get_child(idx).global_position
 	
 	
-func _ready_ORIGINAL():
-	var astar : AStar2D = AStar2D.new()
-
-	var csn_class = preload("res://Wall.tscn")
-	var CITY_SIZE = Globals.MAP_SIZE
-
-	var bmap = {} # Vector2, bool=floor
-	var nodes = {} # Vector2, id 
-
-	# Add walls
-	for y in CITY_SIZE:
-		for x in CITY_SIZE:
-			var xpos = x * Globals.SQ_SIZE
-			var ypos = y * Globals.SQ_SIZE
-			var vec = Vector2(xpos, ypos)
-			if Globals.rnd.randi_range(0, 6) == 0 or x == 0 or y == 0 or x == CITY_SIZE-1 or y == CITY_SIZE-1:
-				bmap[vec] = false
-				# Create wall
-				var wall = csn_class.instance()
-				wall.position.x = xpos
-				wall.position.y = ypos
-				self.add_child(wall)
-			else:
-				var id = astar.get_available_point_id()
-				bmap[vec] = true
-				astar.add_point(id, vec)
-				nodes[vec] = id
-	#			id += 1
-				
-	# Connect nodes
-	for y in CITY_SIZE:
-		for x in CITY_SIZE:
-			if x == 0 or y == 0 or x == CITY_SIZE-2 or y == CITY_SIZE-2: # Avoid OOB edges
-				continue
-			var xpos = x * Globals.SQ_SIZE
-			var ypos = y * Globals.SQ_SIZE
-			var vec = Vector2(xpos, ypos)
-			if bmap[vec] == true: # floor
-				var vec_l = Vector2(xpos-Globals.SQ_SIZE, ypos)
-				if bmap[vec_l]:
-					astar.connect_points(nodes[vec], nodes[vec_l])
-				var vec_r = Vector2(xpos+Globals.SQ_SIZE, ypos)
-				if bmap[vec_r]:
-					astar.connect_points(nodes[vec], nodes[vec_r])
-				var vec_u = Vector2(xpos, ypos-Globals.SQ_SIZE)
-				if bmap[vec_u]:
-					astar.connect_points(nodes[vec], nodes[vec_u])
-				var vec_d = Vector2(xpos, ypos+Globals.SQ_SIZE)
-				if bmap[vec_d]:
-					astar.connect_points(nodes[vec], nodes[vec_d])
-					
-	Globals.astar = astar
-	pass
-
-
+func get_deploy_sq(side):
+	if side == 1:
+		var m = deploy1.size()
+		var idx = Globals.rnd.randi_range(0, m-1)
+		var n = deploy1[idx]
+		deploy1.remove(idx)
+		return n
+	elif side == 2:
+		var m = deploy2.size()
+		var idx = Globals.rnd.randi_range(0, m-1)
+		var n = deploy2[idx]
+		deploy2.remove(idx)
+		return n

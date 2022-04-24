@@ -11,7 +11,7 @@ enum AI_Objective {FindSterner, DefendSterner}
 const MAP_SIZE:int = 40
 const SQ_SIZE:int = 10
 
-var astar : AStar2D
+var astar : AStar2D # todo - move to main
 
 var rnd : RandomNumberGenerator
 

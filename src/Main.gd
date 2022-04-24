@@ -5,21 +5,22 @@ const unit_class = preload("res://Unit.tscn")
 var units = []
 
 func _ready():
+	$Map.load_map()
 	create_units()
 	pass
 	
 
 func create_units():
 	# Side 2
-	var sterner = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(200, 200))
-	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 220))
-	var unit12 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 10))
+	var sterner = create_unit(2, Globals.AI_Objective.DefendSterner, $Map.get_deploy_sq(2))
+	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, $Map.get_deploy_sq(2))
+	var unit12 = create_unit(2, Globals.AI_Objective.DefendSterner, $Map.get_deploy_sq(2))
 
 	# Side 1
-	var unit1 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(10, 10))
-	var unit2 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(20, 10))
-	var unit3 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(30, 10))
-	var unit4 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(40, 10))
+	var unit1 = create_unit(1, Globals.AI_Objective.FindSterner, $Map.get_deploy_sq(1))
+	var unit2 = create_unit(1, Globals.AI_Objective.FindSterner, $Map.get_deploy_sq(1))
+	var unit3 = create_unit(1, Globals.AI_Objective.FindSterner, $Map.get_deploy_sq(1))
+	var unit4 = create_unit(1, Globals.AI_Objective.FindSterner, $Map.get_deploy_sq(1))
 
 	unit1.main_target = sterner
 	unit2.main_target = sterner

@@ -10,15 +10,21 @@ func _ready():
 	
 
 func create_units():
+	# Side 2
+	var sterner = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(200, 200))
+	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 220))
+	var unit12 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 10))
+
+	# Side 1
 	var unit1 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(10, 10))
 	var unit2 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(20, 10))
 	var unit3 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(30, 10))
 	var unit4 = create_unit(1, Globals.AI_Objective.FindSterner, Vector2(40, 10))
 
-	var unit10 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(200, 200))
-	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 220))
-	var unit12 = create_unit(2, Globals.AI_Objective.DefendSterner, Vector2(220, 10))
-
+	unit1.main_target = sterner
+	unit2.main_target = sterner
+	unit3.main_target = sterner
+	unit4.main_target = sterner
 	pass
 
 

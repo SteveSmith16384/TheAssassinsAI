@@ -56,6 +56,9 @@ func get_final_dest():
 	
 func _on_Timer_CheckForEnemies_timeout():
 	# CHeck if any enemies can be seen
+	if current_enemy != null:
+		return
+		
 	for unit in main.units:
 		if unit.side == self.side:
 			continue
@@ -67,11 +70,29 @@ func _on_Timer_CheckForEnemies_timeout():
 			continue
 		
 		current_enemy = unit
-		break
-		#print("Can see")
+		if unit == main_target:
+			tell_others()
+			break
 	pass
 
 
+func tell_others():
+	for unit in main.units: # todo - go through group?
+		if unit.side != self.side:
+			continue
+		if unit.alive == false:
+			continue
+		unit.target_found()
+	pass
+	
+
+func target_found():
+	if current_enemy != main_target:
+		current_enemy = null
+	route = Globals.get_route(self.position, main_target.global_position)
+	pass
+	
+	
 func shoot(target):
 	var bullet = bullet_cls.instance()
 	bullet.shooter = self

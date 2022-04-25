@@ -23,6 +23,10 @@ func _on_Area_area_entered(area):
 		return
 	if parent.side == shooter.side:
 		return
+	if parent.alive == false:
+		return
 	parent.died()
 	self.queue_free()
+#	self.get_parent().remove_child(self)
+#	parent.queue_free()
 	pass

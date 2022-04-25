@@ -1,7 +1,7 @@
 class_name Unit
 extends Node2D
 
-const SPEED = 20
+const SPEED = 30
 const bullet_cls = preload("res://Bullet.tscn")
 
 onready var main = get_tree().get_root().get_node("Main")
@@ -23,6 +23,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if main.game_over:
+		return
+		
 	if alive == false:
 		return
 		
@@ -55,7 +58,9 @@ func get_final_dest():
 	
 	
 func _on_Timer_CheckForEnemies_timeout():
-	# CHeck if any enemies can be seen
+	if main.game_over:
+		return
+		
 	if current_enemy != null:
 		return
 		
@@ -70,26 +75,30 @@ func _on_Timer_CheckForEnemies_timeout():
 			continue
 		
 		current_enemy = unit
-		if unit == main_target:
-			tell_others()
+		if side == 1 and unit == main_target:
+			tell_others(main_target.global_position)
 			break
+		elif side == 2:
+			tell_others(unit.global_position)
 	pass
 
 
-func tell_others():
+func tell_others(pos:Vector2):
 	for unit in main.units: # todo - go through group?
 		if unit.side != self.side:
 			continue
 		if unit.alive == false:
 			continue
-		unit.target_found()
+		if unit == main.sterner:
+			continue
+		unit.come_here(pos)
 	pass
 	
 
-func target_found():
-	if current_enemy != main_target:
+func come_here(pos:Vector2):
+	if side == 1 and current_enemy != main_target:
 		current_enemy = null
-	route = Globals.get_route(self.position, main_target.global_position)
+	route = Globals.get_route(self.position, pos)
 	pass
 	
 	
@@ -97,7 +106,10 @@ func shoot(target):
 	var bullet = bullet_cls.instance()
 	bullet.shooter = self
 	bullet.position = self.global_position
-	var diff = (target.global_position - self.global_position).normalized()
+	var diff: Vector2 = (target.global_position - self.global_position).normalized()
+	var ang = diff.angle()
+	ang += Globals.rnd.randf_range(-.1, .1)
+	diff = Vector2.RIGHT.rotated(ang)
 	bullet.dir = diff
 	main.add_child(bullet)
 	pass
@@ -124,4 +136,5 @@ func _on_Area2D_Closeby_area_exited(area):
 
 func died():
 	alive = false
-	
+	self.visible = false
+	main.unit_died(self)

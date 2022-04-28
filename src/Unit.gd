@@ -43,6 +43,9 @@ func _process(delta):
 		if objective == Globals.AI_Objective.FindSterner:
 			final_dest = get_final_dest()
 			route = Globals.get_route(self.position, final_dest)
+		elif objective == Globals.AI_Objective.DefendSterner:
+			# todo
+			pass
 	else:
 		var target:Vector2 = route[0]
 		if target.distance_to(self.position) < 3:

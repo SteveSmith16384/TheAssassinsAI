@@ -5,6 +5,7 @@ const unit_class = preload("res://Unit.tscn")
 var game_over = false
 
 var units = []
+var side_1_killed = 0
 var sterner
 
 func _ready():
@@ -14,8 +15,11 @@ func _ready():
 	
 
 func create_units():
+	units.clear()
+	side_1_killed = 0
+	
 	# Side 2
-	sterner = create_unit(2, Globals.AI_Objective.DefendSterner, $Map.get_deploy_sq(2))
+	sterner = create_unit(2, Globals.AI_Objective.IsSterner, $Map.get_deploy_sq(2))
 	sterner.get_node("Sprite_white").visible = true
 	var unit11 = create_unit(2, Globals.AI_Objective.DefendSterner, $Map.get_deploy_sq(2))
 	unit11.get_node("Sprite_red").visible = true
@@ -73,7 +77,31 @@ func get_final_dest():
 
 func unit_died(unit):
 	if unit == sterner:
+		$Label.text = "STERNER KILLED!"
 		game_over = true
+		$Timer_Restart.start()
 		pass
+	elif unit.side == 1:
+		side_1_killed += 1
+		if side_1_killed >= 5:
+			$Label.text = "LASER SQUAD KILLED!"
+			game_over = true
+			$Timer_Restart.start()
+	pass
+	
+
+
+func _on_Timer_Restart_timeout():
+	restart()
+	pass
+
+
+func restart():
+	game_over = false
+	for c in self.get_children():
+#		if c.get_type() == "Unit":
+		if c is Unit:
+			c.queue_free()
+	_ready()
 	pass
 	

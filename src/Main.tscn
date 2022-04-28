@@ -9,6 +9,20 @@ script = ExtResource( 2 )
 [node name="Map" parent="." instance=ExtResource( 1 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 356, 206 )
+position = Vector2( 249, 248 )
 current = true
-zoom = Vector2( 0.7, 0.7 )
+
+[node name="Timer_Restart" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Label" type="Label" parent="."]
+margin_left = 136.0
+margin_top = 458.0
+margin_right = 176.0
+margin_bottom = 472.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="timeout" from="Timer_Restart" to="." method="_on_Timer_Restart_timeout"]

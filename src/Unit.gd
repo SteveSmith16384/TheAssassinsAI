@@ -15,7 +15,7 @@ var route = []
 var current_enemy
 var alive = true
 var shot_timer:float = 0
-var final_dest #  When looking for Sterner
+#var final_dest #  When looking for Sterner
 
 func _ready():
 	pass
@@ -41,7 +41,7 @@ func _process(delta):
 		
 	if route.empty():
 		if objective == Globals.AI_Objective.FindSterner:
-			final_dest = get_final_dest()
+			var final_dest = get_final_dest()
 			route = Globals.get_route(self.position, final_dest)
 		elif objective == Globals.AI_Objective.DefendSterner:
 			# todo

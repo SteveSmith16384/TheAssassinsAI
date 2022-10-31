@@ -81,7 +81,7 @@ func load_map():
 func get_final_dest():
 	var m = $LookForNodes.get_child_count()
 	if m == 0:
-		# Todo - restart looking!
+		# Todo - restart looking again!
 		pass
 	var idx = Globals.rnd.randi_range(0, m-1)
 	return $LookForNodes.get_child(idx).global_position

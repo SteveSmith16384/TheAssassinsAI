@@ -9,7 +9,7 @@ const RELEASE_MODE = false
 enum AI_Objective {FindSterner, DefendSterner, IsSterner}
 
 const MAP_SIZE:int = 40
-const SQ_SIZE:int = 10
+const SQ_SIZE:int = 8
 
 var astar : AStar2D # todo - move to main
 

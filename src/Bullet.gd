@@ -10,7 +10,7 @@ func _process(delta):
 	pass
 
 
-func _on_Area_body_entered(body):
+func _on_Area_body_entered(_body):
 	self.queue_free()
 	pass
 
